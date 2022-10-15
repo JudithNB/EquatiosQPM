@@ -1,0 +1,132 @@
+
+!transition_variables
+
+bloque IS
+L_GDP_GAP
+MCI
+L_GDP_RW_GAP
+RR_GAP
+L_Z_GAP
+L_GDP
+L_GDP_BAR
+
+bloque phillips
+DLA_CPI
+RMC
+E_DLA_CPI
+L_CPI
+
+UIP
+L_S
+DLA_Z_BAR
+RS_RW
+PREM
+L_Z
+L_CPI_RW
+L_Z_BAR
+
+Regla política monetaria
+RS
+RSNEUTRAL
+D4L_CPI
+D4L_CPI_TAR
+RR
+
+!transition_shocks
+
+bloque IS
+SHK_L_GDP_GAP
+
+bloque phillips
+SHK_DLA_CPI
+
+
+UIP
+SHK_DLA_S
+
+SHK_L_S
+
+Regla política monetaria
+SHK_RS
+
+!parameters
+
+bloque IS
+b1
+b2
+b3
+b4
+
+bloque de phillips
+a1
+a2
+a3
+
+UIP
+e1
+ss_DLA_CPI_RW
+
+Regla política monetaria
+g1
+g2
+g3
+
+!transition_equations
+
+bloque IS
+L_GDP_GAP=b1*L_GDP_GAP{-1}-b2*MCI+b3*L_GDP_RW_GAP+SHK_L_GDP_GAP;
+MCI=b4*RR_GAP+[1-b4]*[-L_Z_GAP];
+L_GDP=L_GDP_GAP+L_GDP_BAR
+
+bloque phillips
+DLA_CPI=a1*DLA_CPI{-1}+(1-a1)E*DLA_CPI{+1}+a2*RMC+SHK_DLA_CPI;
+RMC=a3*L_GPI_GAP+(1-a3)*L_Z_BAR;
+E_DLA_CPI=DLA_CPI{+1}+DLA_CPI/4;
+L_CPI=L_CPI{-1}+DLA
+
+IUP
+L_S = (1−e1 )*L_S{+1}+e1*(L_S{−1}+2/4∗D4L_CPI_TAR−ss_DLA_CPI_RW + . . .
+DLA_Z_BAR)) + (RS+RS_RW + PREM)/4 + SHK_L_S;
+L_Z = L_S + L_CPI_RW − L_CPI; 	%Real Exchange Rate
+L_Z = L_Z_GAP + L_Z_BAR ; 	%Decompose Real Exchange Rate
+L_Z_BAR = L_Z_BAR{−1} + DLA_Z_BAR/4;
+
+Regla política monetaria
+RS=g1∗RS{−1}+(1−g1)*(RSNEUTRAL+g2*(D4L_CPI{+4}−D4L_CPI_TAR{+4}). . .
++g3*L_GDP_GAP)+SHK_RS;
+RSNEUTRAL=RR_BAR+D4L_CPI{+1};
+RR=RS−D4L_CPI{+1}; 	%Fisher Equation
+RR=RR_BAR+RR_GAP; 	%Decompose interest rate
+D4L_CPI=L_CPI−L_CPI{−4}; %Year on year inflation
+
+!meauseremnt_variables
+
+bloque IS
+OBS_L_GDP
+
+bloque phillips
+OBS_L_CPI
+
+UIP
+OBS_DLA_S
+
+OBS_L_S
+
+Regla política monetaria
+OBS_RS
+
+!measurement_equations
+
+bloque IS
+OBS_L_GDP=L_GDP
+
+bloque phillips
+OBS_L_CPI=L_CPI
+
+UIP
+OBS_DLA_S=DLA_S
+
+OBS_L_S=L_S
+
+Regla política monetaria
+OBS_RSL=RS
